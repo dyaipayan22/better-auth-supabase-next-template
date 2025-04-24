@@ -6,7 +6,7 @@ import { getSession } from "@/lib/session"
 export async function createClient() {
   const cookieStore = await cookies()
   const currentSession = await getSession()
-  console.log("Current User:",currentSession?.user.name)
+  
   let token: string;
   if(currentSession){
     token = jwt.sign(
