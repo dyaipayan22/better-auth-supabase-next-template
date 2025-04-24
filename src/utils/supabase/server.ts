@@ -5,11 +5,17 @@ import { getSession } from "@/lib/session"
 
 export async function createClient() {
   const cookieStore = await cookies()
-  const { session } = await getSession()
-  const token = jwt.sign(
-    { uid: session.userId },
-    process.env.NEXT_PUBLIC_SUPABASE_JWT_SECRET!
-  )
+  const currentSession = await getSession()
+  console.log("Current User:",currentSession?.user.name)
+  let token: string;
+  if(currentSession){
+    token = jwt.sign(
+      { uid: currentSession.session.userId },
+      process.env.SUPABASE_JWT_SECRET!
+    )
+  }else{
+    token = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  }
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

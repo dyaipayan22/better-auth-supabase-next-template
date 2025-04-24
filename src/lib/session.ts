@@ -1,13 +1,10 @@
-import { headers } from "next/headers"
 import "server-only"
+import { headers } from "next/headers"
 import { auth, Session } from "./auth"
 
-export async function getSession(): Promise<Session> {
+export async function getSession(): Promise<Session|null> {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
-  if (!session) {
-    throw new Error("No session found")
-  }
   return session
 }
